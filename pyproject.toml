@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "delivery"
+version = "1.0.0"
+description = "Microservice for managing orders"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "uvicorn>=0.30,<1",
+    "SQLAlchemy>=2,<3",
+    "psycopg[binary]>=3.2,<4",
+    "kafka-python>=2.2,<3",
+    "grpcio>=1.70,<2",
+    "grpcio-tools>=1.70,<2",
+    "protobuf>=5.29,<7",
+    "PyYAML>=6,<7",
+]
+
+[project.scripts]
+delivery = "microarch.delivery.delivery_application:main"
+
+[project.optional-dependencies]
+typing = [
+    "mypy>=1.15,<2",
+    "types-PyYAML",
+    "types-protobuf",
+    "types-grpcio",
+]
+
+[tool.setuptools.packages.find]
+where = ["src/main/python"]
+
+[tool.setuptools.data-files]
+"share/delivery" = ["src/main/resources/application.yml"]
+
+[tool.pyright]
+exclude = ["**/*_pb2_grpc.py"]

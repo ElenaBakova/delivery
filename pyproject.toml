@@ -38,3 +38,6 @@ where = ["src/main/python"]
 
 [tool.pyright]
 exclude = ["**/*_pb2_grpc.py"]
+
+[tool.setuptools.package-data]
+microarch = ["py.typed"]

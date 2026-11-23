@@ -6,7 +6,7 @@ from microarch.delivery.core.domain.model.courier.assignment import (
     Assignment,
     AssignmentStatus,
 )
-from microarch.delivery.core.domain.model.courier.volume import Volume
+from microarch.delivery.core.domain.model.volume.volume import Volume
 from microarch.delivery.core.domain.model.location.location import Location
 
 

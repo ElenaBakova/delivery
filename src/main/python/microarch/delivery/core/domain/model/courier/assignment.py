@@ -2,7 +2,7 @@ import uuid
 from enum import Enum
 from uuid import UUID
 
-from microarch.delivery.core.domain.model.courier.volume import Volume
+from microarch.delivery.core.domain.model.volume.volume import Volume
 from microarch.delivery.core.domain.model.location.location import Location
 
 

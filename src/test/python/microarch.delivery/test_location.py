@@ -57,3 +57,26 @@ def test_throws_value_error(value, name):
         match=f"{name} must be in range \\[{MIN_LOCATION}, {MAX_LOCATION}\\]",
     ):
         Location(*value)
+
+
+@pytest.mark.parametrize(
+    "start, destination, expected",
+    [
+        ((5, 5), (5, 5), False),
+        ((5, 5), (4, 5), True),
+        ((5, 5), (6, 5), True),
+        ((5, 5), (5, 4), True),
+        ((5, 5), (5, 6), True),
+        ((5, 5), (4, 4), False),
+        ((5, 5), (4, 6), False),
+        ((5, 5), (6, 4), False),
+        ((5, 5), (6, 6), False),
+        ((5, 5), (3, 5), False),
+        ((5, 5), (7, 5), False),
+        ((5, 5), (5, 3), False),
+        ((5, 5), (5, 7), False),
+        ((5, 5), (1, 1), False),
+    ],
+)
+def test_is_adjacent(start, destination, expected):
+    assert Location(*start).is_adjacent(Location(*destination)) is expected

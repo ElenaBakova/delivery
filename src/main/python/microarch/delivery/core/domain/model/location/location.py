@@ -27,3 +27,6 @@ class Location:
 
     def distance(self, destination: Self):
         return abs(self.x - destination.x) + abs(self.y - destination.y)
+
+    def is_adjacent(self, destination: Self):
+        return self.distance(destination) == 1

@@ -19,18 +19,21 @@ class Order:
         self.__location = location
         self.__status: OrderStatus = OrderStatus.CREATED
 
-    def change_order_status(self, new_status):
-        if new_status == OrderStatus.ASSIGNED and self.__status != OrderStatus.CREATED:
-            raise ValueError(
-                "can't set status assigned for order with status != created"
-            )
+    @property
+    def id(self):
+        return self.__id
 
-        if (
-            new_status == OrderStatus.COMPLETED
-            and self.__status != OrderStatus.ASSIGNED
-        ):
-            raise ValueError(
-                "can't set status completed for order with status != assigned"
-            )
+    @property
+    def volume(self):
+        return self.__volume
 
-        self.__status = new_status
+    @property
+    def location(self):
+        return self.__location
+
+    @property
+    def status(self) -> OrderStatus:
+        return self.__status
+
+    def change_order_status(self, new_status: OrderStatus) -> None:
+        self.__status = self.__status.transition_to(new_status)

@@ -29,6 +29,16 @@ def test_invalid_init_arguments(
         Assignment(order_id, volume, location, status)
 
 
+def test_status_defaults_to_assigned():
+    assignment = Assignment(
+        order_id=uuid.uuid4(),
+        volume=Volume(9),
+        location=Location(1, 1),
+    )
+
+    assert assignment.status is AssignmentStatus.ASSIGNED
+
+
 def test_invalid_status():
     with pytest.raises(
         ValueError, match="can't create assignment with status = completed"

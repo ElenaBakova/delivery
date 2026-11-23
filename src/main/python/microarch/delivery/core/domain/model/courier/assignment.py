@@ -17,7 +17,7 @@ class Assignment:
         order_id: UUID,
         volume: Volume,
         location: Location,
-        status: AssignmentStatus,
+        status: AssignmentStatus = AssignmentStatus.ASSIGNED,
     ):
         if (
             not isinstance(order_id, UUID)
@@ -39,6 +39,10 @@ class Assignment:
     @property
     def status(self):
         return self.__status
+
+    @property
+    def volume(self):
+        return self.__volume
 
     def complete(self, courier_location: Location):
         if not (

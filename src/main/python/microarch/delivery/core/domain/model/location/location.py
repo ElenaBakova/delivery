@@ -2,6 +2,9 @@ from dataclasses import dataclass
 
 from typing_extensions import Self
 
+MIN_LOCATION = 1
+MAX_LOCATION = 10
+
 
 @dataclass(frozen=True)
 class Location:
@@ -12,8 +15,10 @@ class Location:
     def _is_valid_coordinate(value: int, name: str) -> bool:
         if type(value) is not int:
             raise TypeError(f"{name} must be an integer")
-        if value not in range(1, 11):
-            raise ValueError(f"{name} must be in range [1, 10]")
+        if value not in range(MIN_LOCATION, MAX_LOCATION + 1):
+            raise ValueError(
+                f"{name} must be in range [{MIN_LOCATION}, {MAX_LOCATION}]"
+            )
         return True
 
     def __post_init__(self):
@@ -22,3 +27,6 @@ class Location:
 
     def distance(self, destination: Self):
         return abs(self.x - destination.x) + abs(self.y - destination.y)
+
+    def is_adjacent(self, destination: Self):
+        return self.distance(destination) == 1

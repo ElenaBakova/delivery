@@ -11,7 +11,7 @@ class Courier:
         if not isinstance(location, Location) or not isinstance(name, str):
             raise TypeError("argument is not assignable to the field")
 
-        if name == "" or name is None:
+        if name == "":
             raise ValueError("name can't be empty")
 
         self.__id = uuid.uuid4()

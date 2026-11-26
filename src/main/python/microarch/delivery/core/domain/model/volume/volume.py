@@ -8,7 +8,7 @@ class Volume:
     value: int
 
     def __post_init__(self):
-        if self.value is not int:
+        if not isinstance(self.value, int):
             raise TypeError("volume must be integer")
 
         if self.value <= 0:

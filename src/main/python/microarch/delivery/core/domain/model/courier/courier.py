@@ -8,10 +8,10 @@ from microarch.delivery.core.domain.model.volume.volume import Volume
 
 class Courier:
     def __init__(self, name: str, location: Location) -> None:
-        if not isinstance(location, Location):
+        if not isinstance(location, Location) or not isinstance(name, str):
             raise TypeError("argument is not assignable to the field")
 
-        if name == "":
+        if name == "" or name is None:
             raise ValueError("name can't be empty")
 
         self.__id = uuid.uuid4()
@@ -34,11 +34,19 @@ class Courier:
         new_assignment = Assignment(order.id, order.volume, order.location)
         self.__assignments.append(new_assignment)
 
-    def finish_assignment(self, assignment: Assignment) -> None:
-        if not isinstance(assignment, Assignment):
-            raise TypeError("assignment must be an Assignment")
+    def _find_assignment(self, order):
+        return next((a for a in self.__assignments if a.order_id == order.id), None)
+
+    def complete_assignment(self, order: Order) -> None:
+        if not isinstance(order, Order):
+            raise TypeError("order must be an Order")
+
+        assignment = self._find_assignment(order)
+        if assignment is None:
+            raise ValueError("order is not assigned to that courier")
 
         assignment.complete(self.__location)
+        self.__assignments.remove(assignment)
 
     def move(self, new_location: Location) -> None:
         if not isinstance(new_location, Location):

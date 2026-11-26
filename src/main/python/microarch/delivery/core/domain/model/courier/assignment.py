@@ -37,6 +37,10 @@ class Assignment:
         self.__status: AssignmentStatus = status
 
     @property
+    def order_id(self):
+        return self.__order_id
+
+    @property
     def status(self):
         return self.__status
 

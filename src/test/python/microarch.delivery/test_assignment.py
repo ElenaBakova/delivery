@@ -6,12 +6,12 @@ from microarch.delivery.core.domain.model.courier.assignment import (
     Assignment,
     AssignmentStatus,
 )
-from microarch.delivery.core.domain.model.volume.volume import Volume
 from microarch.delivery.core.domain.model.location.location import Location
+from microarch.delivery.core.domain.model.volume.volume import Volume
 
 
 @pytest.mark.parametrize(
-    "orderId, volume, location, status",
+    "order_id, volume, location, status",
     [
         ("9", Volume(9), Location(1, 1), AssignmentStatus.ASSIGNED),
         (uuid.uuid4(), 9, Location(1, 1), AssignmentStatus.ASSIGNED),
@@ -20,13 +20,23 @@ from microarch.delivery.core.domain.model.location.location import Location
     ],
 )
 def test_invalid_init_arguments(
-    orderId: UUID,
+    order_id: UUID,
     volume: Volume,
     location: Location,
     status: AssignmentStatus,
 ):
     with pytest.raises(TypeError, match="argument is not assignable to the field"):
-        Assignment(orderId, volume, location, status)
+        Assignment(order_id, volume, location, status)
+
+
+def test_status_defaults_to_assigned():
+    assignment = Assignment(
+        order_id=uuid.uuid4(),
+        volume=Volume(9),
+        location=Location(1, 1),
+    )
+
+    assert assignment.status is AssignmentStatus.ASSIGNED
 
 
 def test_invalid_status():
@@ -34,7 +44,7 @@ def test_invalid_status():
         ValueError, match="can't create assignment with status = completed"
     ):
         Assignment(
-            orderId=uuid.uuid4(),
+            order_id=uuid.uuid4(),
             volume=Volume(9),
             location=Location(1, 1),
             status=AssignmentStatus.COMPLETED,
@@ -43,7 +53,7 @@ def test_invalid_status():
 
 def test_complete_assignment():
     assignment = Assignment(
-        orderId=uuid.uuid4(),
+        order_id=uuid.uuid4(),
         volume=Volume(9),
         location=Location(2, 1),
         status=AssignmentStatus.ASSIGNED,
@@ -58,7 +68,7 @@ def test_complete_assignment():
 
 def test_complete_completed_assignment():
     assignment = Assignment(
-        orderId=uuid.uuid4(),
+        order_id=uuid.uuid4(),
         volume=Volume(9),
         location=Location(2, 1),
         status=AssignmentStatus.ASSIGNED,
@@ -76,7 +86,7 @@ def test_complete_completed_assignment():
 
 def test_complete_assignment_from_incorrect_cell():
     assignment = Assignment(
-        orderId=uuid.uuid4(),
+        order_id=uuid.uuid4(),
         volume=Volume(9),
         location=Location(6, 4),
         status=AssignmentStatus.ASSIGNED,

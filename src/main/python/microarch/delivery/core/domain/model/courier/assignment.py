@@ -2,8 +2,8 @@ import uuid
 from enum import Enum
 from uuid import UUID
 
-from microarch.delivery.core.domain.model.volume.volume import Volume
 from microarch.delivery.core.domain.model.location.location import Location
+from microarch.delivery.core.domain.model.volume.volume import Volume
 
 
 class AssignmentStatus(Enum):
@@ -14,13 +14,13 @@ class AssignmentStatus(Enum):
 class Assignment:
     def __init__(
         self,
-        orderId: UUID,
+        order_id: UUID,
         volume: Volume,
         location: Location,
-        status: AssignmentStatus,
+        status: AssignmentStatus = AssignmentStatus.ASSIGNED,
     ):
         if (
-            not isinstance(orderId, UUID)
+            not isinstance(order_id, UUID)
             or not isinstance(volume, Volume)
             or not isinstance(location, Location)
             or not isinstance(status, AssignmentStatus)
@@ -31,14 +31,22 @@ class Assignment:
             raise ValueError("can't create assignment with status = completed")
 
         self.__id = uuid.uuid4()
-        self.__orderId = orderId
+        self.__order_id = order_id
         self.__volume = volume
         self.__location = location
         self.__status: AssignmentStatus = status
 
     @property
+    def order_id(self):
+        return self.__order_id
+
+    @property
     def status(self):
         return self.__status
+
+    @property
+    def volume(self):
+        return self.__volume
 
     def complete(self, courier_location: Location):
         if not (
